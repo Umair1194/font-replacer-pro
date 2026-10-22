@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Font Replacer Pro</title><style>/* STYLES */</style></head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">f<span>↗</span></span><div><h1>Font Replacer <span class="pro">PRO</span></h1><p>New type. Same attention to detail.</p></div></div>
+      <button id="help" class="icon-button" aria-label="Plugin help" title="Help">?</button>
+    </header>
+    <main>
+      <section class="scope-section" aria-labelledby="scope-title">
+        <div class="section-label"><label id="scope-title">REPLACEMENT SCOPE</label><span id="context" class="context">Connecting to Figma…</span></div>
+        <div class="scope-tabs" role="group" aria-label="Replacement scope">
+          <button data-scope="selection" aria-pressed="false">Selection <span id="selection-count">0</span></button>
+          <button data-scope="page" aria-pressed="true">Current page</button>
+          <button data-scope="document" aria-pressed="false">Entire file</button>
+        </div>
+        <details class="options" id="options">
+          <summary>Scan options <span id="options-summary">Hidden included · Locked excluded</span></summary>
+          <div class="options-grid">
+            <label><input type="checkbox" id="includeHidden" checked> Include hidden text</label>
+            <label><input type="checkbox" id="includeLocked"> Include locked text</label>
+            <label><input type="checkbox" id="includeInstances"> Include instance overrides</label>
+            <label><input type="checkbox" id="includeComponents"> Include main components</label>
+          </div>
+          <p class="option-note">Component edits can affect instances outside this scope. Bound font variables are always skipped.</p>
+        </details>
+      </section>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section id="workspace" aria-label="Font replacement workspace"></section>
+    </main>
+    <footer>
+      <div id="footer-note" class="footer-note"><span class="privacy-dot"></span> Local processing. Your text stays in Figma.</div>
+      <div class="footer-actions"><button id="secondary" class="button secondary" hidden>Rescan</button><button id="primary" class="button primary">Scan current page <span aria-hidden="true">↗</span></button></div>
+    </footer>
+    <div id="resize" title="Drag to resize" aria-hidden="true"></div>
+  </div>
+  <dialog id="font-dialog" aria-labelledby="picker-title">
+    <div class="dialog-heading"><div><p class="eyebrow">DESTINATION FONT</p><h2 id="picker-title">Choose a font</h2></div><button id="close-picker" class="icon-button" aria-label="Close font picker">×</button></div>
+    <label class="search"><span aria-hidden="true">⌕</span><input id="font-search" placeholder="Search available font families…" autocomplete="off" aria-label="Search font families"></label>
+    <div class="picker-body"><div id="family-list" class="family-list" role="group" aria-label="Font families"></div><div id="style-list" class="style-list" role="group" aria-label="Font styles"></div></div>
+    <div id="picker-note" class="picker-note"></div>
+    <div class="dialog-actions"><button id="refresh-fonts" class="text-button">Refresh fonts</button><button id="choose-font" class="button primary" disabled>Use font</button></div>
+  </dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-heading"><h2 id="help-title">A considered font swap.</h2><button id="close-help" class="icon-button" aria-label="Close help">×</button></div>
+    <ol class="help-steps"><li>Choose a scope and scan its text layers.</li><li>Pick a destination for each source font, or map a whole family with matching styles.</li><li>Review the changes, then replace.</li></ol>
+    <p>Only fonts available in Figma can be selected. Family mapping uses exact or spacing-normalized style names; unresolved styles stay unmapped.</p>
+    <p>Text content and other formatting are preserved. Font metrics can change wrapping and layout. Font changes can create text-style overrides. Variable source axes reset to the selected destination’s named style.</p>
+    <p>Cancel stops future changes; completed changes remain. Use Figma’s native Undo to revert. Undo grouping and missing-font recovery still need validation in your Figma editor.</p>
+    <div class="help-version">FONT REPLACER PRO <span>0.1.2 · Development build</span></div>
+  </dialog>
+  <script>/* SCRIPT */</script>
+</body>
+</html>
