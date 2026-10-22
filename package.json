@@ -1,6 +1,6 @@
 {
   "name": "font-replacer-pro",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "description": "A local Figma font inventory and batch replacement plugin",
   "type": "module",
@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node scripts/test.mjs",
     "check": "npm run typecheck && npm test && npm run build",
-    "preview": "node scripts/preview.mjs"
+    "preview": "node scripts/preview.mjs",
+    "benchmark": "node scripts/benchmark.mjs"
   },
   "devDependencies": {
     "@figma/plugin-typings": "1.142.0",

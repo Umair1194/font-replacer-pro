@@ -1,4 +1,4 @@
-# Figma validation checklist — 0.1.0
+# Figma validation checklist: 0.2.0
 
 Run in a duplicate/disposable design file. Record editor build, OS, available fonts, fixture size, plugin build, and results. This checklist is pending; it is not evidence that native Figma testing has passed.
 
@@ -34,3 +34,17 @@ Run in a duplicate/disposable design file. Record editor build, OS, available fo
 | Dark theme and resize | All states legible; no clipped actions | Pending |
 
 Do not publish performance percentages until matched-scope baseline and candidate runs produce equivalent correct results. Browser preview timings are not Figma benchmarks.
+
+## New release cases
+
+- Selected pages load only the requested pages.
+- Fast mode distinguishes excluded containers from counted skipped text; exact mode counts text.
+- Refresh preserves valid mappings; missing target styles are flagged.
+- Paint/effect style edits do not clear mappings; used text-style edits require refresh.
+- Inter-only mapping leaves other source families unchanged.
+- Stale operation responses cannot overwrite a newer job.
+- Cancel responds during font/page waits and review planning; late host completions perform no writes.
+- Result counters distinguish writes, verified writes, failures, and unprocessed layers.
+- Picker supports more than 100 families, keyboard navigation, recent families, and Escape.
+- JSON report downloads locally, including all issues beyond the visible page.
+- Check both themes at 400px width and resize via keyboard.

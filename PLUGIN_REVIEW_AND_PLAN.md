@@ -1,10 +1,10 @@
-# Font Replacer Pro — reference review and implementation plan
+# Font Replacer Pro: reference review and implementation plan
 
 Prepared 22 October 2026. Status: planning only; no plugin implementation has been created.
 
 ## 1. Recommendation
 
-Build an independently implemented Figma Design plugin that reproduces Uwarp Font Replacer's verified core job—replacing fonts and swapping families in batches—then improves precision, responsiveness, and large-file handling. Treat exact workflow and visual parity as a separate discovery milestone before calling this a replica.
+Build an independently implemented Figma Design plugin that reproduces Uwarp Font Replacer's verified core job of replacing fonts and swapping families in batches, then improves precision, responsiveness, and large-file handling. Treat exact workflow and visual parity as a separate discovery milestone before calling this a replica.
 
 The first release should make this task excellent: select a scope, see its font usage, map source fonts to available replacements, review ambiguous style matches, and apply the changes with an accurate report and tested native undo behavior.
 
@@ -102,7 +102,7 @@ Start around 420 × 600 px, resizable, with Figma light/dark theme support. Dime
 
 ## 6. Architecture
 
-Use TypeScript for the engine and shared message types. Use a small UI implementation—Preact is a reasonable initial choice—with a bundled local HTML entry and a straightforward build such as esbuild. Confirm current dependency versions at implementation time. Bundle size and clarity matter more than choosing a framework based on presumed runtime speed.
+Use TypeScript for the engine and shared message types. Use a small UI implementation, such as Preact, with a bundled local HTML entry and a straightforward build such as esbuild. Confirm current dependency versions at implementation time. Bundle size and clarity matter more than choosing a framework based on presumed runtime speed.
 
 ```text
 Plugin UI iframe
@@ -299,7 +299,7 @@ Measure panel startup, time to first useful inventory, complete scan, font enume
 
 Use at least 10 warmed repetitions for early tuning with medians and ranges; use a larger set, such as 30, for release percentile reporting. Separate cold-font/cold-page runs. Record hardware, OS, Figma build, plugin build, and fixture version. Retain raw timing data.
 
-### Provisional targets—not measured claims
+### Provisional targets (not measured claims)
 
 - Panel usable within 500 ms after plugin entry on the agreed baseline machine, excluding Figma's own launch scheduling.
 - First useful inventory within 1 s for the 1,000-text-node fixture when its page is already loaded.
@@ -381,8 +381,8 @@ Recommended first milestone: prove the engine on selection/current-page workflow
 
 Reference material:
 
-- [Supplied Community listing](https://www.figma.com/community/plugin/1326934612692352393/uwarp-font-replacer-replace-fonts-font-swap-batch-change-in-figma) — access unsuccessful in this review.
-- [Publisher product index](https://ox.uwarp.design/) — indexed product title and advertised core purpose; live fetch also timed out.
+- [Supplied Community listing](https://www.figma.com/community/plugin/1326934612692352393/uwarp-font-replacer-replace-fonts-font-swap-batch-change-in-figma): access unsuccessful in this review.
+- [Publisher product index](https://ox.uwarp.design/): indexed product title and advertised core purpose; live fetch also timed out.
 
 Official technical documentation:
 

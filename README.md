@@ -1,6 +1,6 @@
 # Font Replacer Pro
 
-A local Figma Design plugin for inspecting font usage and replacing fonts in batches. Current development build: 0.1.2, independently implemented from the project plan. Exact Uwarp UI/feature parity has not been established.
+A local Figma Design plugin for inspecting font usage and replacing fonts in batches. Current development build: 0.2.0, independently implemented from the project plan. Exact Uwarp UI/feature parity has not been established.
 
 ## Import into Figma
 
@@ -14,8 +14,10 @@ This local manifest does not reuse another publisher's plugin ID. If Figma asks 
 
 ## Included
 
-- Selection (including nested text), current page, and whole-file scopes.
-- Cooperative traversal with exact skipped-text counts and inherited hidden/locked checks.
+Version 0.2.0 adds grouped families, mapping filters, selected pages, mapping preservation on refresh, fast/exact scan modes, bounded cancellable waits, indexed planning, detailed reviews, recent destinations, issue reports, and keyboard/contrast improvements. See [release notes](docs/RELEASE_0.2.0.md). Phase 3 features remain excluded.
+
+- Selection (including nested text), current page, selected pages, and whole-file scopes.
+- Cooperative traversal with inherited hidden/locked checks. Fast mode prunes excluded containers and reports their container counts; turn it off for exact skipped-text counts.
 - Font family/style inventory, layer/range counts, variable-font identification, and unavailable-source indicators.
 - Searchable destination picker using fonts available to Figma.
 - Explicit per-source mappings and bulk family mapping using exact or spacing-normalized style names. No automatic nearest-weight fallback.
@@ -43,6 +45,7 @@ Requires Node.js 22+ and npm. Dependencies are pinned in `package-lock.json`.
 npm ci
 npm run check
 npm run watch
+npm run benchmark
 ```
 
 `npm run check` runs strict TypeScript checks, engine tests, and a production build. Reload/reopen the plugin in Figma after rebuilding. `npm run watch` also observes the HTML/CSS shell.

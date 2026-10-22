@@ -10,7 +10,7 @@ function uiHarness() {
   const elements = new Map(), timers = new Map(), sent = [];
   let nextTimer = 0, now = 0;
   const get = id => {
-    if (!elements.has(id)) elements.set(id, { textContent: '', innerHTML: '', disabled: false, hidden: false, open: false, toggleAttribute() {}, setAttribute() {}, querySelectorAll: () => [] });
+    if (!elements.has(id)) elements.set(id, { textContent: '', get innerHTML() { return this._html || ''; }, set innerHTML(value) { this._html = value; this.textContent = value.replace(/<[^>]*>/g, ''); }, disabled: false, hidden: false, open: false, toggleAttribute() {}, setAttribute() {}, querySelectorAll: () => [] });
     return elements.get(id);
   };
   const parent = { postMessage: value => sent.push(value.pluginMessage) }, window = {};
@@ -34,7 +34,7 @@ test('lost INIT is retried and a missing bridge becomes an actionable retry stat
   h.advance(1000); assert.equal(h.sent.length, 2);
   h.advance(25000); assert.match(h.get('primary').textContent, /Retry connection/); assert.equal(h.get('primary').disabled, false);
   h.get('primary').onclick(); assert.equal(h.sent.at(-1).type, 'INIT'); assert.equal(h.get('primary').disabled, true);
-  h.receive(fonts); assert.equal(h.get('primary').disabled, false);
+  h.receive({ type: 'CONTEXT', selected: 0, pageName: 'Recovered' }); h.receive(fonts); assert.equal(h.get('primary').disabled, false);
 });
 test('font enumeration errors expose Retry rather than an indefinitely disabled button', () => {
   const h = uiHarness(); h.receive({ type: 'ERROR', message: 'Font list unavailable' });
@@ -66,4 +66,29 @@ test('sandbox bootstraps the compiled UI through a forwarding window without any
   runInNewContext(main, { figma: api, __html__: '', setTimeout, clearTimeout });
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(h.get('context').textContent, 'Host-initiated connection'); assert.equal(h.get('primary').disabled, false); assert.equal(h.timers.size, 0);
+});
+
+test('malformed host payloads do not replace a healthy interface state', () => {
+  const h = uiHarness(); h.receive({ type: 'CONTEXT', selected: 0, pageName: 'Healthy page' }); h.receive(fonts);
+  const label = h.get('primary').textContent;
+  h.receive({ type: 'FONTS', fonts: [{ family: null, style: 42 }] });
+  h.receive({ type: 'RESULT', result: { changedLayers: -1 } });
+  assert.equal(h.get('primary').textContent, label); assert.equal(h.get('context').textContent, 'Healthy page');
+});
+test('scan can begin while the destination font catalog is still loading', () => {
+  const h = uiHarness(); h.receive({ type: 'CONTEXT', selected: 0, pageName: 'Available scope' });
+  assert.equal(h.get('primary').disabled, false); h.get('primary').onclick();
+  const scan = h.sent.at(-1); assert.equal(scan.type, 'SCAN'); assert.match(scan.requestId, /operation-/);
+  h.receive({ type: 'PROGRESS', requestId: 'operation-obsolete', stage: 'Obsolete scan', done: 1, total: 10 });
+  assert.notEqual(h.get('progress-title').textContent, 'Obsolete scan');
+  h.receive({ type: 'ERROR', requestId: 'operation-obsolete', area: 'operation', message: 'Old operation failed' });
+  assert.equal(h.get('notice').textContent, '');
+});
+test('unrelated style changes do not invalidate the inventory', async () => {
+  const events = new Map(), sent = [];
+  const api = { ui: { postMessage: m => sent.push(m) }, currentPage: { selection: [], name: 'Style fixture' }, on: (name, callback) => events.set(name, callback), listAvailableFontsAsync: async () => [], showUI() {} };
+  runInNewContext(main, { figma: api, __html__: '', setTimeout, clearTimeout });
+  await new Promise(resolve => setImmediate(resolve));
+  events.get('stylechange')({ styleChanges: [{ id: 'unrelated-paint', type: 'STYLE_PROPERTY_CHANGE', style: { type: 'PAINT' } }] });
+  assert.equal(sent.some(m => m.type === 'INVALIDATED'), false);
 });
